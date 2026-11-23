@@ -37,3 +37,28 @@ Open http://127.0.0.1:3000. For a production run, use npm.cmd run build followed
 ### Next day prerequisites
 
 Add the real FastAPI GET /api/health route in the backend and launch Uvicorn on 127.0.0.1 with one worker. Confirm the browser reports connected against FastAPI and offline when it stops. Define the next research endpoint contracts before wiring the corresponding unavailable screens to backend data.
+
+## Dashboard and system settings (2026-11-23)
+
+The sibling FastAPI checkout now serves /api/system. Its documented contract and typed backend models were used directly. Frontend dependency versions and the lockfile are unchanged.
+
+### Changed files
+
+- frontend/app/api/system/route.ts, frontend/app/api/health/route.ts, and frontend/lib/system-proxy.ts replace the old health-only proxy with system data and a compatibility health route.
+- frontend/lib/contracts.ts and api.ts validate system snapshots, expose typed failures, and retain intended backend storage errors.
+- frontend/components/health.tsx, system-view.tsx, and workstation-ui.tsx add the shared query, live dashboard metrics, runtime checks, filterable format table, setup guidance, and reusable cards, alerts, empty states, and form fields.
+- frontend/app/page.tsx, frontend/app/[section]/page.tsx, frontend/app/globals.css, and frontend/lib/sections.ts wire the screens and feature-specific prerequisites.
+- frontend/tests/system.test.ts replaces the earlier health-only coverage. docs/api-contracts.md records the system request, response, and error examples.
+
+### Commands and outcomes
+
+- npm.cmd --prefix frontend test passed all four targeted system tests.
+- npm.cmd --prefix frontend run typecheck passed route type generation and tsc --noEmit.
+- npm.cmd --prefix frontend run build passed and included the dynamic system and legacy health endpoints.
+- A Node smoke script launched the real sibling backend with .venv's Python and -m backend, a fresh temporary MUSICAI_STORAGE_ROOT, and a production Next.js server on loopback. The backend reported all four counts at zero, readiness true, CPU available, CUDA unavailable, and 26 audio formats. The legacy health route returned 200 and POST /api/system returned 405.
+- Headless Chrome verified zero counts and the empty-workspace message, settings guidance and audio-format filtering, and a feature prerequisite. After stopping the backend, both pages reported offline, the dashboard hid the count cards, and settings guidance stayed visible. Restarting the backend and clicking Retry restored the connected state.
+- git diff --check passed. The real hardware probe covered the installed CPU runtime. CUDA availability and missing-runtime rendering were not exercised on different installations.
+
+### Next day prerequisites
+
+Define typed dataset listing and ingestion contracts against the managed manifests store. Before connecting ingestion controls, validate configured paths and exercise decoding with representative input files on the installed runtime.

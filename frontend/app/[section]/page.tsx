@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { HealthPanel } from "@/components/health";
+import { SystemView } from "@/components/system-view";
+import { Card, EmptyState } from "@/components/workstation-ui";
+import Link from "next/link";
 import { sections } from "@/lib/sections";
 
 type Props = { params: Promise<{ section: string }> };
@@ -22,16 +24,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function SectionPage({ params }: Props) {
-  const { title, description, slug } = await resolveSection(params);
+  const { title, description, slug, prerequisite } = await resolveSection(params);
   return (
     <>
       <h1>{title}</h1>
       <p className="intro">{description}</p>
-      {slug === "settings" ? <HealthPanel /> : (
-        <section className="panel" aria-labelledby="unavailable-title">
-          <h2 id="unavailable-title">{title} unavailable</h2>
-          <p>This screen requires a backend API that is not available in this build.</p>
-        </section>
+      {slug === "settings" ? <SystemView settings /> : (
+        <Card title={title + " prerequisites"}>
+          <EmptyState title={title + " unavailable"}>{prerequisite}</EmptyState>
+          <p><Link href="/settings">View system settings</Link></p>
+        </Card>
       )}
     </>
   );
