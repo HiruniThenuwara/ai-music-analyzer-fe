@@ -62,3 +62,67 @@ The sibling FastAPI checkout now serves /api/system. Its documented contract and
 ### Next day prerequisites
 
 Define typed dataset listing and ingestion contracts against the managed manifests store. Before connecting ingestion controls, validate configured paths and exercise decoding with representative input files on the installed runtime.
+
+## Dataset source editor (2026-11-25)
+
+### Changed files
+
+- frontend/app/datasets/page.tsx, components/dataset-view.tsx, app/globals.css, app/[section]/page.tsx, and lib/sections.ts replace the placeholder with a validated editor, availability table, official links, and extraction instructions.
+- frontend/app/api/datasets/sources routes and frontend/lib/dataset-api.ts, dataset-proxy.ts, and datasets.ts provide the typed client and same-origin loopback proxy.
+- frontend/tests/datasets.test.ts covers unsafe paths, malformed responses, cross-origin writes, conflicts, and a missing backend endpoint.
+- The sibling backend's backend/routes/dataset_preferences.py, backend/main.py, and tests/test_dataset_preferences.py provide catalog-backed folder checks and atomic preference writes. The dataset import work appeared in the sibling checkout during implementation. The editor uses its official catalog and configured dataset root. It stores preferences separately from indexed manifests.
+- docs/api-contracts.md records the source preference contracts and examples. Dependency lockfiles are unchanged.
+
+### Commands and outcomes
+
+- npm.cmd --prefix frontend test passed all seven tests.
+- npm.cmd --prefix frontend run typecheck and npm.cmd --prefix frontend run build passed.
+- .venv\Scripts\python.exe -m pytest -p no:cacheprovider -q in the sibling checkout passed all 39 tests, including source availability, explicit acceptance, changed terms, stale writes, and import API coexistence.
+- The first browser smoke attempt received 404 while the sibling dataset routes were changing. After integration, a fresh production Next.js and real FastAPI loopback run passed in headless Chrome. It checked an official link, initial unconfigured and unaccepted states, validation before enabling, confirmation after a save, one actual directory found and one missing, and the backend-offline state.
+- git diff --check passed. This verification used a temporary workspace. It exercised folder checks and preference saves. It did not import or decode licensed audio.
+
+### Next day prerequisites
+
+Use an authorized local extraction to exercise the separate dataset import flow. Check required annotations and decode representative audio before using imported examples for training.
+
+## Dataset explorer (2026-11-25)
+
+### Changed files
+
+- frontend/app/datasets/explorer/page.tsx, app/datasets/page.tsx, components/explorer-view.tsx, components/sample-audio.tsx, and app/globals.css add manifest selection, server-backed filters and pagination, scoped counts, sample metadata, and WaveSurfer playback.
+- frontend/app/api/datasets/explorer, lib/explorer-proxy.ts, lib/explorer.ts, and lib/dataset-api.ts implement the read-only loopback proxy and typed response validation. frontend/tests/explorer.test.ts covers filter forwarding, path and host rejection, and audio error passthrough.
+- The sibling backend's backend/routes/dataset_explorer.py, backend/services/dataset_explorer.py, backend/main.py, and tests/test_dataset_explorer.py add manifest reports, scoped search, and bounded WAV previews from indexed files. Canonical status describes coverage of expected release split categories. Reports stay scoped to a configuration and source when manifests overlap.
+- docs/api-contracts.md records the new request, response, and error examples. Dependency lockfiles are unchanged.
+
+### Commands and outcomes
+
+- npm.cmd --prefix frontend test passed all 10 tests.
+- npm.cmd --prefix frontend run typecheck and npm.cmd --prefix frontend run build passed.
+- .venv\Scripts\python.exe -m pytest -p no:cacheprovider -q in the sibling checkout passed all 45 tests. The explorer regression verified case-insensitive filenames, positive-instrument matching, exact splits, pagination, scope with overlapping configurations, canonical and exploratory reports, and audio errors.
+- A Node smoke script launched real FastAPI and production Next.js on loopback and drove headless Chrome against a temporary MAESTRO-layout import with generated WAV audio. The explorer showed the fresh empty state. For 28 indexed rows, the combined filters returned 26 matches and the filenames on both browser pages matched direct backend results. Chrome rendered a waveform and advanced the audio playback timeline. A removed file showed the missing-audio error and an invalid file showed the decoder error.
+- git diff --check passed in both checkouts. The smoke test used generated WAV audio. Full-release corpus performance and representative licensed encodings remain unmeasured.
+
+### Next day prerequisites
+
+Use an authorized extraction to verify representative encodings and manifest sizes. Define the next feature's API contract before wiring controls that consume these manifests.
+
+## Managed dataset jobs (2026-11-25)
+
+### Changed files
+
+- frontend/app/datasets/page.tsx, components/dataset-jobs.tsx, components/job-monitor.tsx, and app/globals.css add validation and preparation controls, recoverable history, a reusable job monitor, elapsed time, logs, poll and retry behavior, and cancellation.
+- frontend/app/api/jobs, lib/job-proxy.ts, lib/job-api.ts, lib/jobs.ts, and tests/jobs.test.ts implement and verify the typed loopback contract, action allowlist, busy errors, terminal states, and real-progress validation.
+- The sibling backend's jobs and datasets routes, jobs service, musicai/preparation_job.py, and musicai/segments.py integrate both actions with its persisted subprocess manager. Validation decodes indexed files. Preparation stages and publishes its result through the manager. Worker progress comes from actual indexed file totals.
+- The sibling backend's tests/test_dataset_validation_jobs.py exercises real validation success and decode failure alongside the shared manager's controlled lifecycle tests. docs/api-contracts.md documents the frontend request, status, progress, and error contracts. Dependency lockfiles are unchanged.
+
+### Commands and outcomes
+
+- npm.cmd --prefix frontend test passed all 13 tests.
+- npm.cmd --prefix frontend run typecheck and npm.cmd --prefix frontend run build passed. An initial type check found an overly narrow detail type guard; the rerun passed after correction.
+- .venv\Scripts\python.exe -m pytest -p no:cacheprovider -q in the sibling checkout passed all 53 tests, including frozen-input preparation, validation success/failure, queued and running cancellation, busy rejection, and restart recovery.
+- A Node smoke script launched production Next.js and real FastAPI on loopback with generated valid and invalid audio and a controlled slow test worker. Headless Chrome verified successful validation and preparation, stderr and exit details on failure, HTTP 409 on a competing start, restoration of active monitoring after refresh, cancellation, and interrupted status after backend restart. It displayed 100% for one verified completed file and no percentage for the slow worker with no reported total.
+- git diff --check passed. Tests used a temporary workspace and generated audio. Full-corpus runtime was not measured.
+
+### Next day prerequisites
+
+Prepare an authorized local dataset and verify the resulting segment manifest before wiring any training controls. Reuse the managed job status and polling contract for the next allowlisted compute operation.

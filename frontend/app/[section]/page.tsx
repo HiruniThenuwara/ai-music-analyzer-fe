@@ -10,7 +10,7 @@ type Props = { params: Promise<{ section: string }> };
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return sections.filter(({ slug }) => slug).map(({ slug }) => ({ section: slug }));
+  return sections.filter(({ slug }) => slug && slug !== "datasets").map(({ slug }) => ({ section: slug }));
 }
 
 async function resolveSection(params: Props["params"]) {
