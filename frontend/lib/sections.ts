@@ -5,7 +5,7 @@ import {
 
 export const sections = [
   { slug: "", title: "Dashboard", icon: LayoutDashboard, group: "Workspace", description: "Monitor the local research workstation.", prerequisite: "" },
-  { slug: "datasets", title: "Datasets", icon: Database, group: "Research", description: "Inspect dataset manifests and audio validation results.", prerequisite: "Dataset listing and ingestion APIs must be implemented. Audio ingestion also requires a working decoder." },
+  { slug: "datasets", title: "Datasets", icon: Database, group: "Research", description: "Configure local audio and annotation sources for research.", prerequisite: "Dataset listing and ingestion APIs must be implemented. Audio ingestion also requires a working decoder." },
   { slug: "training", title: "Training", icon: Activity, group: "Research", description: "Monitor managed training jobs and their progress.", prerequisite: "Training requires a validated dataset, a working PyTorch runtime, and the managed job API." },
   { slug: "models", title: "Models", icon: Network, group: "Research", description: "Browse checkpoints registered for inference.", prerequisite: "Model browsing requires the registry API and real checkpoint metadata. Inference also requires verified compatible checkpoints." },
   { slug: "experiments", title: "Experiments", icon: FlaskConical, group: "Research", description: "Review experiment configurations, metrics, and artifacts.", prerequisite: "Experiment browsing requires persisted runs and an API for configurations, metrics, and artifacts." },

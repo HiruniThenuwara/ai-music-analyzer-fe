@@ -66,3 +66,28 @@ caption { text-align: left; color: var(--muted); padding-bottom: .55rem; }
 th, td { padding: .55rem .65rem; border-bottom: 1px solid var(--border); }
 tbody th { font-weight: 550; }
 pre { overflow-x: auto; padding: .8rem; background: #101219; border-radius: .45rem; }
+
+.source-edit { min-width: 0; margin: 1.25rem 0 0; padding: .85rem; border: 1px solid var(--border); border-radius: .5rem; }
+.source-edit legend { padding: 0 .35rem; }
+.source-edit .field + .field { margin-top: .65rem; }
+.check-field { display: flex; align-items: baseline; gap: .5rem; margin-top: .65rem; }
+.check-field input { flex-shrink: 0; accent-color: var(--accent); }
+.source-links { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: .65rem; }
+.panel code { overflow-wrap: anywhere; }
+
+.explorer-filters, .explorer-counts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: .8rem 1rem; }
+.explorer-filters { margin-top: .85rem; align-items: end; }
+.field select { min-height: 2.75rem; padding: .45rem .65rem; color: inherit; font: inherit; background: #101219; border: 1px solid #4b546b; border-radius: .45rem; }
+.explorer-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-top: .75rem; }
+.explorer-actions button, .table-scroll button { margin-top: 0; }
+.sample-meta { display: grid; grid-template-columns: minmax(7rem, max-content) minmax(0, 1fr); gap: .45rem .8rem; }
+.sample-meta dd { margin: 0; overflow-wrap: anywhere; }
+.sample-meta dt { color: var(--muted); }
+.waveform, .sample-media { width: 100%; margin-top: .65rem; }
+.panel details { margin-top: .75rem; }
+
+.job-progress { display: grid; gap: .35rem; }
+.job-progress progress { width: 100%; accent-color: var(--accent); }
+.job-logs { max-height: 18rem; overflow: auto; margin: .55rem 0 0; padding: .75rem 1rem .75rem 2rem; border: 1px solid var(--border); border-radius: .45rem; overflow-wrap: anywhere; }
+.job-logs time { color: var(--muted); margin-right: .35rem; }
+.job-history-field { margin-top: 1rem; }
